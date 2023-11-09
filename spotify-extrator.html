@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Embed Generator</title>
+    <style>
+        :root {
+            --neutral1: #211E1E;
+            --neutral2: #2C2929;
+            --neutral3: #707070;
+            --neutral4: #E3E3E3;
+            --neutral5: #F2F2F2;
+            --neutral6: #F4F4F4;
+            --neutral7: #FFFFFF;
+            --main1: #1DB954; /* Cor principal do Spotify */
+            /* ... outras variáveis ... */
+            --transitionFast: all 0.5s;
+            --lowRadius: 5px;
+            --font1: "Lato", sans-serif;
+        }
+
+        body {
+            background-color: var(--neutral1);
+            color: var(--neutral7);
+            font-family: var(--font1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 40px;
+            font-family: var(--font1);
+        }
+
+        .label-text {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            color: rgba(var(--neutral7-rgb), 0.8);
+            font-family: var(--font1);
+            margin-bottom: 10px;
+        }
+
+        #inputField {
+            background-color: var(--neutral5);
+            border: 3px solid var(--neutral2);
+            padding: 20px 10px;
+            border-radius: var(--lowRadius);
+            font-size: 14px;
+            color: var(--neutral7);
+            transition: var(--transitionFast);
+            height: 50px;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            background-color: var(--neutral2);
+            color: var(--neutral6);
+            font-family: var(--font1);
+            margin-bottom: 20px;
+        }
+
+        #inputField:focus {
+            border: 3px solid transparent;
+        }
+
+        #extractButton {
+            padding: 20px;
+            margin-bottom: 40px;
+            color: var(--neutral6);
+            background-color: var(--main1);
+            border-radius: var(--lowRadius);
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: var(--font1);
+            border: none;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-top: 20px;
+            font-family: var(--font1);
+        }
+
+        #resultContainer {
+            background-color: #2c2a2a;
+            border: 3px solid var(--neutral2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            word-break: break-all;
+            margin-top: 20px;
+            font-family: var(--font1);
+        }
+
+        #error {
+            color: red;
+            margin-top: 10px;
+            font-family: var(--font1);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Spotify Embed Generator</h1>
+        <span class="label-text">Insira o código do iframe do Spotify:</span>
+        <input type="text" id="inputField" placeholder="Insira o código do iframe do Spotify">
+        <button id="extractButton" onclick="extractCode()">Extrair Código</button>
+        <p>Embed alterado aqui</p>
+        <div id="resultContainer"></div>
+        <div id="error"></div>
+    </div>
+
+    <script>
+        function extractCode() {
+            var inputField = document.getElementById('inputField');
+            var resultContainer = document.getElementById('resultContainer');
+            var errorDiv = document.getElementById('error');
+
+            var spotifyCode = inputField.value.trim();
+
+            if (spotifyCode === '') {
+                errorDiv.textContent = 'Por favor, insira um código do iframe do Spotify.';
+                resultContainer.textContent = '';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            try {
+                // Extrair a URL do iframe do Spotify
+                var url = spotifyCode.match(/src="(.*?)"/)[1];
+
+                // Adicionar os parâmetros desejados
+                var modifiedEmbed = `${url}?utm_source=generator&theme=0`;
+
+                // Exibir o embed alterado em um container
+                resultContainer.innerHTML = `<div>${modifiedEmbed}</div>`;
+            } catch (error) {
+                // Lidar com erros durante a extração
+                errorDiv.textContent = 'Ocorreu um erro ao extrair o código do iframe do Spotify. Certifique-se de que o código fornecido seja válido.';
+                resultContainer.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>
